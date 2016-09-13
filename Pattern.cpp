@@ -1,12 +1,11 @@
 #include <bits/stdc++.h>
 
-#typedef unsigned long long llu
-#typedef long long ll
-#typedef long double Lf
+#define llu unsigned long long
+#define ll long long
+#define Lf long double
 
 using namespace std;
 
 int main(){
-	
-	return 0;
+  return 0;
 }
