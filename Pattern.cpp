@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 
-#define llu unsigned long long
-#define ll long long
-#define Lf long double
+typedef unsigned long long llu;
+typedef long long ll;
+typedef long double Lf;
 
 using namespace std;
 
