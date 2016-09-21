@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define FOR(i, n) for(int i = 0; i < n; i++)
 
 typedef unsigned long long llu;
 typedef long long ll;
