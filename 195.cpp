@@ -9,19 +9,16 @@ using namespace std;
 
 map<char, int> alphabet;
 
-bool compare(string a, string b){ // true = b <= a
-	string num;
-	int numA = 0, numB = 0;
-	for(int i = 0; i < a.size(); i++){
-		num.push_back((char)(alphabet[a[i]]+'0'));
+bool compare(string a, string b){
+	bool lower;
+	FOR(i, a.size()) {
+		if(a[i] != b[i]){
+			if(alphabet[a[i]] < alphabet[b[i]]) lower = true;
+			else lower = false;
+			break;
+		}
 	}
-	numA = stoi(num);
-	num.clear();
-	for(int i = 0; i < b.size(); i++){
-		num.push_back((char)(alphabet[b[i]]+'0'));
-	}
-	numB = stoi(num);
-	return numB <= numA;
+	return lower;
 }
 
 int main(){
@@ -49,12 +46,13 @@ int main(){
 		for(set<string>::iterator it = ss.begin(); it != ss.end(); it++)
 			vs.push_back(*it);
 			
-		for(int i = 0; i < vs.size()-1; i++){
+		/*for(int i = 0; i < vs.size()-1; i++){
 			for(int j = i+1; j < vs.size(); j++){
 				if(compare(vs[i], vs[j]))
 					swap(vs[i], vs[j]);
 			}
-		}
+		}*/
+		sort(vs.begin(), vs.end(), compare);
 		FOR(i, vs.size()) cout << vs[i] << endl;
 	}
   return 0;
