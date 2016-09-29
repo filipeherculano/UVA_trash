@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
-#define FOR(i, n) for(int i = 0; i < n; i++)
+#define FOR(i, a, n) for(int i = (int)(a); i < (int)(n); ++i)
+#define REP(i, n) FOR(i, 0, n)
 #define pb push_back
 
 typedef unsigned long long llu;
