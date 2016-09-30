@@ -46,12 +46,6 @@ int main(){
 		for(set<string>::iterator it = ss.begin(); it != ss.end(); it++)
 			vs.push_back(*it);
 			
-		/*for(int i = 0; i < vs.size()-1; i++){
-			for(int j = i+1; j < vs.size(); j++){
-				if(compare(vs[i], vs[j]))
-					swap(vs[i], vs[j]);
-			}
-		}*/
 		sort(vs.begin(), vs.end(), compare);
 		FOR(i, vs.size()) cout << vs[i] << endl;
 	}
