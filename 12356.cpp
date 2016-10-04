@@ -13,28 +13,32 @@ using namespace std;
 
 int main(){
 	int s, b, l, r;
-	while((cin >> s >> b) && (s || b)){
+	while(scanf("%d %d", &s, &b) && (s || b)){
 		set<int> soldiers;
 		set<int>::iterator fir = soldiers.begin(), sec;
 		for(int i = 1; i <= s; i++)
 			soldiers.insert(fir, i);	// O(1)	
 
 		for(int i = 0; i < b; i++){
-			cin >> l >> r;
+			scanf("%d %d", &l, &r);
 			fir = soldiers.find(l);		// O(log n)
 			sec = soldiers.find(r);		// O(log n)
 			sec++;
-			if(fir == soldiers.begin()) cout << "* ";
+			if(fir == soldiers.begin()) printf("* ");
 			else {
 			  fir--;
-			  cout << *fir << " ";
+			  int temp = *fir;
+			  printf("%d ", temp);
 			  fir++;
 			}
-			if(sec == soldiers.end()) cout << "*\n";
-			else cout << *sec << endl;
+			if(sec == soldiers.end()) printf("*\n");
+			else {
+				int temp = *sec;
+				printf("%d\n", temp);
+			}
 			soldiers.erase(fir, sec);	// O(n)
 		}
-		cout << "-\n";
+		printf("-\n");
 	}
 	return 0;
 }
