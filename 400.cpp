@@ -13,24 +13,29 @@ using namespace std;
 
 int main(){
 	int t;
-	while(scanf("%d%*c", &t)){
-		int M = 0, c;
-  	set<string> ss;
-  	set<string>::iterator it;
+	while(scanf("%d%*c", &t) != EOF){
+		int M = 0, c, z = 0;
+  	vector<string> vs;
   	string aux;
   	REP(i, t){
   		getline(cin, aux);
-  		ss.insert(aux);
+  		vs.pb(aux);
   		M = max(M, (int)aux.size());
   	}
-  	if(M < 58) c = 60/(M+2);
-		else c = 1;
-		string mat[t/c][c];
-		it = ss.begin();
-		REP(i, c) REP(j, t/c) {mat[j][i] = *it; it++;}
+  	sort(all(vs));
+  	c = 60/(M+2);
+  	if((60 % (M+2)) >= M) c++;
+		string mat[(t+c-1)/c][c];
+		REP(i, c) REP(j, (t+c-1)/c) if(z < vs.size()) mat[j][i] = vs[z++];
 		printf("------------------------------------------------------------\n");
-		REP(i, t/c) {
-			REP(j, c) cout << mat[i][j]; cout << setfill(' ') << setw(M+2-(mat[i][j].size()));
+		REP(i, (t+c-1)/c) {
+			REP(j, c) {
+				if(mat[i][j].size()){
+					cout.width(M);
+					if(j) printf("  ");
+					cout << std::left << mat[i][j];
+				}
+			}
   		cout << endl;
   	}
   }
