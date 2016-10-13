@@ -19,10 +19,17 @@ int main(){
 		printf("Case #%d:", caso++);
 		if(c != r){
 			vector<int> vi;
-			for(int i = 1; i <= sqrt(c-r); i++) if((c % i) == r) vi.pb(i);
-			REP(i, vi.size()) vi.pb((c-r)/(i+1));
+			for(int i = 1; i <= sqrt(c-r); i++) if(!((c-r)%i)) vi.pb(i);
+			int size = vi.size();
+			REP(i, size) vi.pb((c-r)/(vi[i]));
 			sort(all(vi));
-			REP(i, vi.size()) printf(" %d", vi[i]);
+			REP(i, vi.size()) {
+				if(vi[i] > r) {
+					if(i){
+						if(vi[i] != vi[i-1]) printf(" %d", vi[i]);
+					} else printf(" %d", vi[i]);
+				}
+			}
 		} else printf(" 0");
 		cout << endl;
 	}
