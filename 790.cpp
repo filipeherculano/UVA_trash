@@ -11,73 +11,111 @@ typedef long double ld;
 
 using namespace std;
 
-bool compare(tuple<int, int, int> a, tuple<int, int, int> b){
-	if(get<1>(a) < get<1>(b)) return false;
-	else if(get<1>(a) > get<1>(b)) return true;
-	else {
-		if(get<2>(a) < get<2>(b)) return true;
-		else if(get<2>(a) > get<2>(b)) return false;
-		else return get<0>(a) < get<0>(b);
-	}
+/*
+	Don't fall for the problem description lies!
+*/
+
+struct submission{
+	int time;
+	int tempoABS;
+	int tempo;
+	char quest;
+	char ver;
+};
+
+struct teams{
+	int time;
+	int qnt;
+	int pen;
+};
+
+bool compareInput(const submission &a, const submission &b){
+	if(a.tempoABS < b.tempoABS) return true;
+	if(a.tempoABS > b.tempoABS) return false;
+	
+	return a.ver < b.ver;
+}
+
+bool compare(const teams &a, const teams &b){
+	if(a.qnt < b.qnt) return false;
+	if(a.qnt > b.qnt) return true;
+	
+	if(a.pen < b.pen) return true;
+	if(a.pen > b.pen) return false;
+	
+	return a.time < b.time;
 }
 
 int main(){
-	int n;
+	int n;    
+	string line;
 	cin >> n;
-	scanf("%*c%*c");
+  cin.ignore(100, '\n');
+  getline(cin, line);
 	while(n--){
-		string line;
-		int p[25][7], team, h, m, M = 0;
+		int p[25][26], team, h, m, M = 0;
 		char ver, quest;
-		REP(i, 25) REP(j, 7) p[i][j] = -1;
-		vector< tuple<int, int, int> > vt;
-		while(getline(cin, line) && line.size()){
+		vector<teams> vt;
+		vector<submission> vinput;
+		
+		REP(i, 25) REP(j, 26) p[i][j] = 0;
+		
+		while(getline(cin, line)){
+			if(line == "") break;
+			submission subs;
 			REP(i, line.size()) if(line[i] == ':') line[i] = ' ';
 			stringstream ss;
 			ss << line;
-			ss >> team >> quest >> h >> m >> ver;
-			M = max(M, team);
-			int pen = (h*60) + m;
-			if(ver == 'Y'){
-				if(p[team-1][quest-'A'] < 0){
-					if(p[team-1][quest-'A'] == -1) p[team-1][quest-'A'] = pen;
-					else p[team-1][quest-'A'] = pen + abs(p[team-1][quest-'A']);
+			ss >> subs.time >> subs.quest >> h >> m >> subs.ver;
+			subs.tempoABS = (abs(h)*60)+abs(m);
+			subs.tempo = (h*60)+m;
+			M = max(M, subs.time);
+			vinput.pb(subs);
+		}
+		sort(all(vinput), compareInput);
+		
+		int qst[M][26];
+		REP(i, M) REP(j, 26) qst[i][j] = 0;
+		
+		REP(i, vinput.size()){
+			if(vinput[i].ver == 'Y'){
+				if(qst[vinput[i].time-1][vinput[i].quest-'A'] != 1) {
+					p[vinput[i].time-1][vinput[i].quest-'A'] = vinput[i].tempo + abs(p[vinput[i].time-1][vinput[i].quest-'A'])*20;
+					qst[vinput[i].time-1][vinput[i].quest-'A'] = 1;
 				}
-			} else if(ver == 'N'){
-				if(p[team-1][quest-'A'] < 0){
-					if(p[team-1][quest-'A'] == -1) p[team-1][quest-'A'] = -20;
-					else p[team-1][quest-'A'] -= 20;
+			} else if(vinput[i].ver == 'N'){
+				if(qst[vinput[i].time-1][vinput[i].quest-'A'] != 1) {
+					p[vinput[i].time-1][vinput[i].quest-'A']--;
 				}
 			}
 		}
 		REP(i, M){
-			int total = 0, qnt = 0;
-			REP(j, 7){
-				if(p[i][j] > 0){
-					total += p[i][j];
-					qnt++;
+			teams timao;
+			timao.time = i+1;
+			timao.qnt = 0;
+			timao.pen = 0;
+			REP(j, 26){
+				if(qst[i][j] == 1){
+					timao.pen += p[i][j];
+					timao.qnt++;
 				}
 			}
-			vt.pb(make_tuple(i+1, qnt, total));
+			vt.pb(timao);
 		}
 		sort(all(vt), compare);
+		
 		printf("RANK TEAM PRO/SOLVED TIME\n");
 		int j = 0;
 		REP(i, vt.size()){
-			if(!i || (get<1>(vt[i]) != get<1>(vt[i-1]) || get<2>(vt[i]) != get<2>(vt[i-1]))) j = i+1;
-			cout.width(4); cout << std::right << j;
-			cout.width(5); cout << std::right << get<0>(vt[i]);
-			if(get<1>(vt[i])) {cout.width(5); cout << std::right << get<1>(vt[i]);}
-			if(get<2>(vt[i])) {cout.width(11); cout << std::right << get<2>(vt[i]);}
-			cout << endl;
+			if (i == 0 || vt[i].qnt != vt[i-1].qnt || (vt[i].qnt == vt[i-1].qnt && vt[i].pen != vt[i-1].pen)) j = i+1;
+			printf("%4d %4d", j, vt[i].time);
+			if(vt[i].qnt > 0) printf(" %4d %10d", vt[i].qnt, vt[i].pen);
+			printf("\n");
 		}
-		cout << endl;
+		if(n) cout << endl;
 	}
   return 0;
 }
-
-
-
 
 
 
