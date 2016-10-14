@@ -12,7 +12,7 @@ typedef long double ld;
 using namespace std;
 
 bool compare(tuple<string ,string, string, string, string, string, string, string> a, tuple<string ,string, string, string, string, string, string, string> b){
-	return lexicographical_compare(all(get<0>(a)), all(get<0>(b)));
+	return ((get<0>(a)) < (get<0>(b)));
 }
 
 int main(){
@@ -22,7 +22,8 @@ int main(){
 	while(n--){
 		string dep, line;
 		getline(cin, dep);
-		while(getline(cin, line) && line.size()){
+		while(getline(cin, line)){
+			if (line.empty()) break;
 			string first, home, hp, wp, cb, title, last;
 			stringstream ss;
 			int count = 0;
@@ -32,11 +33,17 @@ int main(){
 			}
 			ss << line;
 			ss >> title >> first >> last >> home >> hp >> wp >> cb;
+			REP(i, title.size()) if(title[i] == '_') title[i] = ' ';
+			REP(i, first.size()) if(first[i] == '_') first[i] = ' ';
+			REP(i, last.size()) if(last[i] == '_') last[i] = ' ';
 			REP(i, home.size()) if(home[i] == '_') home[i] = ' ';
+			REP(i, hp.size()) if(hp[i] == '_') hp[i] = ' ';
+			REP(i, wp.size()) if(wp[i] == '_') wp[i] = ' ';
+			REP(i, cb.size()) if(cb[i] == '_') cb[i] = ' ';
 			teach.pb(make_tuple(last, home, dep, hp, wp, cb, title, first));
 		}
 	}
-	sort(all(teach));
+	sort(all(teach), compare);
 	REP(i, teach.size()){
 		printf("----------------------------------------\n");
 		cout << get<6>(teach[i]) << " " << get<7>(teach[i]) << " " << get<0>(teach[i]) << endl;
