@@ -13,22 +13,21 @@ using namespace std;
 
 int main(){
 	string line;
-	while(getline(cin, line)){
-		string res;
-		string::iterator it = res.begin();
-		bool home = false;
+	while(cin >> line){
+		bool isFront = false;
+		list<char> lc;
+		list<char>::iterator it = lc.begin();
 		REP(i, line.size()){
-			if(line[i] == '[') {
-				home = true;
-				it = res.begin();
+			if(line[i] == '[') it = lc.begin();
+			else if(line[i] == ']') it = lc.end();
+			else {
+				it = lc.insert(it, line[i]);
 				it++;
-			} else if(line[i] == ']') {
-				home = false;
-				it = res.end();
-			} else if(home) res.insert(it, line[i]);
-			else res.insert(it, line[i]);
+			}
 		}
-		cout << res << endl;
+		for(list<char>::iterator it = lc.begin(); it != lc.end(); it++)
+			cout << *it;
+		cout << endl;
 	}
   return 0;
 }
