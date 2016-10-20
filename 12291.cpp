@@ -32,7 +32,7 @@ int main(){
 		int lin = (coor[1][0]-coor[0][0])+1, col = (coor[1][1]-coor[0][1])+1;
 		char small[lin][col];
 		REP(i, lin) REP(j, col) small[i][j] = temp[i+coor[0][0]][j+coor[0][1]];
-		// here is were shit gets CrAzY!
+		// here is where shit gets CrAzY!
 		for(int i = 0; i <= n-lin && !res; i++){
 			for(int j = 0; j <= n-col && !res; j++){
 				bool ok = true;
