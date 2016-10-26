@@ -11,16 +11,34 @@ typedef long double ld;
 
 using namespace std;
 
+// Map the combinations, not the courses.
+
 int main(){
 	int n;
-	while(scanf("%d%*c") && n){
-		map<int, int> mii;
-		map<int, int>::iterator it;
-		REP(i, n){	
-			string line;
-			stringstream ss;
-			getline(cin, line);
+	while(cin >> n && n){
+		int m = 1, cnt = 0;
+		map<vector<int>, int> mii;
+		map<vector<int>, int>::iterator it;
+		REP(i, n) {
+			vector<int> v(5);
+			REP(j, 5) cin >> v[j];
+			sort(all(v));
+			it = mii.find(v);
+			if(it == mii.end()) mii.insert(make_pair(v, 1));
+			else {
+				it->second++;
+				m = max(m, it->second);
+			}
 		}
+		for(it = mii.begin(); it != mii.end(); it++)
+			if(it->second == m) cnt += it->second;
+		cout << cnt << endl;
 	}
   return 0;
 }
+
+
+
+
+
+
