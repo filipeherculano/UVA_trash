@@ -125,15 +125,39 @@ public:
 };
 
 class FenwickTree{
-
+private:
+	vector<int> ft;
+public:
+	FenwickTree(int n) {
+		ft.assign(n+1, 0);
+	}
+	int rsq(int b){
+		int sum = 0;
+		for(; b; b -= (b & (-b))) sum += ft[b];
+		return sum;
+	}
+	
+	int rsq(int a, int b){
+		return rsq(b) - (a == 1 ? 0:rsq(a-1));	
+	}
+	
+	void adjust(int k, int v){
+		for(; k < (int)ft.size(); k += (k & (-k))){
+			ft[k] += v;
+		}
+	}
 };
 
 int main(){
-	int arr[] = {18,17,13,19,15,11,20};
-	vector<int> vi(arr, arr+7);
-	SegmentTree st(vi);
-	printf("%d\n", st.rmq(0, 6));
-	st.update(2, 99);
-	printf("%d\n", st.rmq(0, 6));
   return 0;
 }
+
+
+
+
+
+
+
+
+
+

@@ -13,37 +13,39 @@ using namespace std;
 
 class SegmentTree{
 private:
-	vector<int> st, A, pot, pos;
+	vector<int> A, cres, decres;
+	vector< pair<int,int> > st;
 	int n;
 	int left(int p) {return p << 1;}
 	int right(int p) {return (p << 1) + 1;}
 
-	int cmp(int i, int j){
-		if(A[pos[i]] == A[pos[j]]) {
-			pos[i/2] = pos[j];
-			return st[i]+st[j];
+	pair<int,int> cmp(pair<int,int> i, pair<int,int> j, int L, int R){
+		pair<int,int> temp;
+		if(A[i.second] == A[j.second]) {
+			temp.first = i.first + j.first;
+			temp.second = j.second;
 		} else{
-			if(pot[pos[i]] > pot[pos[j]]){
-				pos[i/2] = pos[i];
-				return st[i];
-			} else{
-				pos[i/2] = pos[j];
-				return st[j];	
+			if(i.first == j.second){
+			
+			} else if(i.first > j.second){
+				
 			}
 		}
+		return temp;
 	}
 	
 	void build(int p, int L, int R){
 		if(L == R) {
-			st[p] = 1;
-			pos[p] = L;
+			st[p].first = 1;
+			st[p].second = L;
 		} else{
 			build(left(p), L, (L+R) / 2);
 			build(right(p), ((L+R) / 2) + 1, R);
-			st[p] = cmp(left(p), right(p)); 
+			pair<int,int> p1 = st[left(p)], p2 = st[right(p)];
+			st[p] = cmp(p1, p2, L, R); 
 		}
 	}
-	
+/*	
 	int rmq(int p, int L, int R, int i, int j){
 		if(i > R || j < L) return -1;
 		if(i <= L && j >= R) return st[p];
@@ -55,16 +57,14 @@ private:
 		if(p2 == -1) return p1;
 		return cmp(left(p), right(p));
 	}
-
+*/
 public:
 	SegmentTree(const vector<int> &_A){
 		A = _A;
 		n = (int)_A.size();
 		st.assign(4*n, 0);
-		pos.assign(4*n, 0);
-		pot.assign(n, 0);
-		vector<int> decres(n, 0);
-		vector<int> cres(n, 0);
+		cres.assign(n, 0);
+		decres.assign(n, 0);
 		REP(i, n){
 			if(i){
 				if(A[i] == A[i-1]) cres[i] = cres[i-1] + 1;
@@ -78,7 +78,6 @@ public:
 				else decres[i] = 1;
 			}
 		}
-		REP(i, n) pot[i] = cres[i] + decres[i];
 		build(1, 0, n-1);
 	}
 
