@@ -17,10 +17,8 @@ using namespace std;
 bool pass(int i, vector< tuple<double,int,int,int,int> > vp){
 	vector< tuple<double,int,int,int,int> >::iterator it;
 	for(it = vp.begin(); it != vp.end(); it++){
-		double dt = (get<0>(*it)*3600.0)/(double)i;
-		int time = floor(dt);
-		//cout << time << " " << i << " " << get<0>(*it) << endl;
-		if((time % get<4>(*it)) > (get<1>(*it)+get<2>(*it))) {
+		double dt = (get<0>(*it)*3600)/i;
+		if(fmod(dt, get<4>(*it)) > (get<1>(*it)+get<2>(*it))) {
 			return false;
 		}
 	}
@@ -48,23 +46,18 @@ int main(){
 			if(pass(i, vp))
 				acc.pb(i);		
 				
-		printf("Case %d: ", caso++);
-		REP(i, acc.size()) cout << acc[i] << " ";
-		cout << endl;
-		/*if(acc.size()){
-			int atual;
-			REP(i, acc.size()){
-				if(i){
-					if(i == acc.size()-1 || 
-						(abs(acc[i] - acc[i-1]) == 1 && abs(acc[i] - acc[i+1]) != 1)){
-						printf("-%d", acc[i]);
-					} else if((abs(acc[i] - acc[i+1]) == 1 && abs(acc[i] - acc[i-1]) != 1)){
-						printf(", %d", acc[i]);
-					}
-				} else printf("%d", acc[i]);
+		printf("Case %d:", caso++);
+		
+		if(acc.size()){
+			int pt1 = 0, pt2 = 0;
+			while(pt1 < acc.size()){
+				while(pt2 != acc.size()-1 && abs(acc[pt2]-acc[pt2+1]) == 1) pt2++;
+				if(pt1 == pt2) printf("%s%d",  pt1 == 0 ? " ":", ", acc[pt1]);
+				else printf("%s%d-%d", pt1 == 0 ? " ":", " , acc[pt1], acc[pt2]);
+				pt1 = pt2+1; pt2++;
 			}
-		} else printf("No acceptable speeds.");
-		cout << endl;*/
+		} else printf(" No acceptable speeds.");
+		cout << endl;
 	}
   return 0;
 }
