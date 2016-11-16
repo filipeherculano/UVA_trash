@@ -21,11 +21,11 @@ int main(){
 		vector<int> vi(n);
 		map<int,int> mii;
 		REP(i,n) cin >> vi[i];
-		for(int i = 0; i < n; i++) mii.insert(make_pair(vi[i], i));
+		for(int i = 2; i < n; i++) mii.insert(make_pair(vi[i], i));
 		for(int i = 0; i < n-2 && ok; i++){
 			for(int j = i+1; j < n-1 && ok; j++){
 				int diff = vi[j]-vi[i];
-				if(mii.find(diff+vi[j]) != mii.end()) ok = false;
+				if(mii.find(diff+vi[j]) != mii.end() && mii[diff+vi[j]] > j) ok = false;
 			}
 		}
 		printf("%s", ok ? "yes\n":"no\n");
