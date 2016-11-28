@@ -11,6 +11,7 @@ typedef long long ll;
 typedef long double ld;
 
 const int INF = 0x3f3f3f3f;
+const double EPS = 1e-9;
 
 using namespace std;
 
