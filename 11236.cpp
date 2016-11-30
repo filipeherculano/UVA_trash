@@ -19,9 +19,9 @@ int main(){
 	map<int, pair<int,int> > m;
 	set< vector<int> > s;
 	for(int a = 1; a <= 2000; a++){
-		for(int b = a; b <= 2000 && a*b <= 8000000000; b++){
-			for(int c = b; c <= 2000 && a*b*c <= 8000000000; c++){
-				for(int d = c; d <= 2000 && a*b*c*d <= 8000000000; d++){
+		for(int b = a; b <= 2000 && a+b <= 2000 && a*b <= 2000000000; b++){
+			for(int c = b; c <= 2000 && a+b+c <= 2000 && a*b*c <= 2000000000; c++){
+				for(int d = c; d <= 2000 && a+b+c+d <= 2000 && a*b*c*d <= 2000000000; d++){
 					printf("%d %d %d %d\n", a, b, c, d);
 				}
 			}
