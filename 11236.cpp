@@ -16,30 +16,23 @@ const double EPS = 1e-9;
 using namespace std;
 
 int main(){
-	map<int, pair<int,int> > m;
+	vector<int> vi;
 	set< vector<int> > s;
-	for(int a = 1; a <= 2000; a++){
-		for(int b = a; b <= 2000 && a+b <= 2000 && a*b <= 2000000000; b++){
-			for(int c = b; c <= 2000 && a+b+c <= 2000 && a*b*c <= 2000000000; c++){
-				for(int d = c; d <= 2000 && a+b+c+d <= 2000 && a*b*c*d <= 2000000000; d++){
-					printf("%d %d %d %d\n", a, b, c, d);
-				}
+	for(int a = 1; 4*a <= 2000; a++){
+		for(int b = a; a + 3*b <= 2000; b++){
+			for(int c = b; a + b + 2*c <= 2000; c++){
+				ll p = a*b*c, s = a+b+c;
+
+				if(p > 1000000){
+					ll d = (1000000*s) / (p - 1000000);
+
+					if(d < c || d + s > 2000) continue;
+
+					if(fabs(((a+b+c+d)/100.0)-((a*b*c*d)/100000000.0)) < EPS)
+						printf("%.2lf %.2lf %.2lf %.2lf\n", a/100.0, b/100.0, c/100.0, d/100.0);
+				} else continue;
 			}
 		}
 	}
-	/*for(int c = 1; c <= 300; c++){
-		for(int d = c; d <= 300; d++){
-			else m.insert(make_pair(c*d, make_pair(c, d)));
-		}
-	}
-	for(int a = 1; a <= 2000; a++){
-		for(int b = a; b <= 2000; b++){
-			if(m.find(a+b) != m.end()){
-				vector<int> temp = {a, b, m[a+b].first, m[a+b].second};
-				sort(all(temp));
-				s.insert(temp);
-			}
-		}
-	}*/
   return 0;
 }
