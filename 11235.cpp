@@ -4,97 +4,107 @@
 #define REP(i, n) FOR(i, 0, n)
 #define all(a) a.begin(),a.end()
 #define pb push_back
+#define LSOne(S) (S & (-S))
 
 typedef unsigned long long llu;
 typedef long long ll;
 typedef long double ld;
 
+const int INF = 0x3f3f3f3f;
+const double EPS = 1e-9;
+
 using namespace std;
 
-class SegmentTree{
-private:
-	vector<int> A, cres, decres;
-	vector< pair<int,int> > st;
+class SegTree{
+public:
+	vector<int> A, st, dir, esq;
 	int n;
-	int left(int p) {return p << 1;}
-	int right(int p) {return (p << 1) + 1;}
-
-	pair<int,int> cmp(pair<int,int> i, pair<int,int> j, int L, int R){
-		pair<int,int> temp;
-		if(A[i.second] == A[j.second]) {
-			temp.first = i.first + j.first;
-			temp.second = j.second;
-		} else{
-			if(i.first == j.second){
-			
-			} else if(i.first > j.second){
-				
-			}
-		}
-		return temp;
-	}
+	int left(int x) {return x << 1;}
+	int right(int x) {return left(x) + 1;}
 	
 	void build(int p, int L, int R){
-		if(L == R) {
-			st[p].first = 1;
-			st[p].second = L;
-		} else{
-			build(left(p), L, (L+R) / 2);
-			build(right(p), ((L+R) / 2) + 1, R);
-			pair<int,int> p1 = st[left(p)], p2 = st[right(p)];
-			st[p] = cmp(p1, p2, L, R); 
+		if(L == R) st[p] = 1;
+		else{
+			build(left(p), L, (L+R)/2);
+			build(right(p), 1 + ((L+R)/2), R);
+			
+			int p1 = st[left(p)];
+			int p2 = st[right(p)];
+				
+			st[p] = max(p1, p2);
+
+			if(A[(L+R)/2] == A[1 + ((L+R)/2)]){
+				int mid = (L+R)/2;
+				st[p] = max(st[p], min(mid - L + 1, esq[mid]) + min(R - mid, dir[mid+1]));
+			}
 		}
 	}
-/*	
-	int rmq(int p, int L, int R, int i, int j){
-		if(i > R || j < L) return -1;
-		if(i <= L && j >= R) return st[p];
 
-		int p1 = rmq(left(p), L, ((L+R) / 2), i, j);
-		int p2 = rmq(right(p), ((L+R) / 2) + 1, R, i, j);
+	int _rmq(int p, int L, int R, int i, int j){
+		if(i > R || j < L) return -1;
+		if(L >= i && R <= j) return st[p];
+
+		int p1 = _rmq(left(p), L, (L+R)/2, i, j);
+		int p2 = _rmq(right(p), 1+((L+R)/2), R, i, j);	 
 
 		if(p1 == -1) return p2;
 		if(p2 == -1) return p1;
-		return cmp(left(p), right(p));
+		
+		int ans = max(p1, p2);
+
+		if(A[(L+R)/2] == A[1 + ((L+R)/2)]){
+			int mid = (L+R)/2;
+			ans = max(ans, min(mid - i + 1, esq[mid]) + min(j - mid, dir[mid+1]));
+		}
+		return ans;
 	}
-*/
+
 public:
-	SegmentTree(const vector<int> &_A){
-		A = _A;
-		n = (int)_A.size();
+	SegTree(const vector<int> &_A){
+		A = _A; n = (int)A.size();
 		st.assign(4*n, 0);
-		cres.assign(n, 0);
-		decres.assign(n, 0);
-		REP(i, n){
-			if(i){
-				if(A[i] == A[i-1]) cres[i] = cres[i-1] + 1;
-				else cres[i] = 1;
-			} else cres[i] = 1;
-		}
-		for(int i = n-1; i >= 0; i--){
-			if(i == n-1) decres[i] = 1;
-			else {
-				if(A[i] == A[i+1]) decres[i] = decres[i+1] + 1;
-				else decres[i] = 1;
-			}
-		}
+		dir.assign(n, 1);
+		esq.assign(n, 1);
+		for(int i = 1; i < n; i++) if(A[i] == A[i-1]) esq[i] += esq[i-1];
+		for(int i = n-1; i >= 0; i--) if(A[i] == A[i+1]) dir[i] += dir[i+1];
 		build(1, 0, n-1);
 	}
 
-	int rmq(int i, int j) {return rmq(1, 0, n-1, i, j);}
+	int rmq(int i, int j){
+		return _rmq(1, 0, n-1, i, j);
+	}
 };
 
 int main(){
-	int n, q, i, j;
-	while(cin >> n && n){
-		cin >> q;
-		vector<int> arr(n);
-		REP(z, n) cin >> arr[z];
-		SegmentTree st(arr);
-		REP(z, q){
-			cin >> i >> j;
-			printf("%d\n", st.rmq(i-1, j-1));
+	int n, m;
+	while(scanf("%d", &n) && n){
+		scanf("%d", &m);
+		vector<int> A(n);
+		REP(i, n) cin >> A[i];
+		SegTree st(A);
+		REP(z, m){
+			int i, j;
+			scanf("%d %d", &i, &j);
+			cout << st.rmq(i-1, j-1) << endl;
 		}
 	}
-	return 0;
+  return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
