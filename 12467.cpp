@@ -5,8 +5,6 @@
 #define all(a) a.begin(),a.end()
 #define pb push_back
 #define LSOne(S) (S & (-S))
-#define dbg(x) cerr << ">>>> " << x << endl;
-#define _ << " , " <<
 
 typedef unsigned long long llu;
 typedef long long ll;
@@ -18,9 +16,6 @@ const double EPS = 1e-9;
 using namespace std;
 
 int main(){
-	//freopen("input.txt", "rt", stdin);
-	//freopen("output.txt", "wt", stdout);
-  	return 0;
-
+	
   return 0;
 }
