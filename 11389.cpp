@@ -22,5 +22,16 @@ using namespace std;
 int main(){
 	//freopen("input.txt", "rt", stdin);
 	//freopen("output.txt", "wt", stdout);
+	int n,d,r;
+	while(scanf("%d %d %d", &n, &d, &r) && n){
+		int cnt = 0;
+		vector<int> v(n), w(n);
+		REP(i,n) scanf("%d", &v[i]);
+		REP(i,n) scanf("%d", &w[i]);
+		sort(all(v));
+		sort(all(w));
+		for(int i = 0; i < n; i++) cnt += max(0,(v[i]+w[n-1-i]) - d);
+		cout << r*cnt << endl;
+	}
 	return 0;
 }

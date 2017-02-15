@@ -22,5 +22,21 @@ using namespace std;
 int main(){
 	//freopen("input.txt", "rt", stdin);
 	//freopen("output.txt", "wt", stdout);
+	int t, caso = 1;
+	scanf("%d%*c", &t);
+	while(t--){
+		int n, cnt =0 ;
+		scanf("%d%*c", &n);
+		string line;
+		getline(cin,line);
+		int i = 0;
+		while(i < line.size()){
+			if(line[i] == '.'){
+				cnt++;
+				i += 3;
+			} else i++;
+		}
+		printf("Case %d: %d\n", caso++, cnt);
+	}
 	return 0;
 }
